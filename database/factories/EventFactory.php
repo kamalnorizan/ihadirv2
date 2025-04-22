@@ -25,7 +25,7 @@ class EventFactory extends Factory
             'title'=> fake()->sentence(rand(3, 5)),
             'location'=> fake()->company(),
             'pax'=> rand(10, 20),
-            'owner_id'=> rand(1, User::count()),
+            'owner_id'=> rand(1, 5),
             'event_category_id'=> rand(1, EventCategory::count()),
             'email'=> fake()->email(),
             'description'=> fake()->paragraph(rand(1, 3)),
