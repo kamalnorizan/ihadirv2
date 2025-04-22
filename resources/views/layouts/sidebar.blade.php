@@ -11,7 +11,10 @@
             </a>
             <span class="icon-thumbnail"><i class="pg-icon">home</i></span>
         </li>
-
+        <li class="">
+            <a href="#" class="logoutBtn"><span class="title">Log Keluar</span></a>
+            <span class="icon-thumbnail"><i class="pg-icon">card</i></span>
+        </li>
     </ul>
     <div class="clearfix"></div>
 </div>
