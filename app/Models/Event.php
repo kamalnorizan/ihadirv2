@@ -20,5 +20,23 @@ class Event extends Model
 
     protected $guarded = ['id'];
 
+    /**
+     * Get the owner that owns the Event
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id', 'id');
+    }
 
+    /**
+     * Get the eventCategory that owns the Event
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function eventCategory()
+    {
+        return $this->belongsTo(EventCategory::class, 'event_category_id', 'id');
+    }
 }

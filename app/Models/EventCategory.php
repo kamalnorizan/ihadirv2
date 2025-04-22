@@ -16,4 +16,13 @@ class EventCategory extends Model
 
     protected $guarded = ['id'];
 
+    /**
+     * Get all of the events for the EventCategory
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function events()
+    {
+        return $this->hasMany(Event::class, 'event_category_id', 'id');
+    }
 }
