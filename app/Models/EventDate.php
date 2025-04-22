@@ -9,4 +9,16 @@ class EventDate extends Model
 {
     /** @use HasFactory<\Database\Factories\EventDateFactory> */
     use HasFactory;
+
+    public $timestamps = true;
+
+    protected $table = 'event_dates';
+
+    protected $primaryKey = 'id';
+
+    public $incrementing = true;
+
+    protected $guarded = ['id'];
+
+
 }
