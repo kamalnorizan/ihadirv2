@@ -7,6 +7,7 @@ use Ramsey\Uuid\Uuid;
 use App\Models\EventDate;
 use Illuminate\Http\Request;
 use App\Models\EventCategory;
+use App\Http\Requests\EventRequest;
 use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
@@ -22,16 +23,7 @@ class EventController extends Controller
         return view('events.create', compact('eventCategories'));
     }
 
-    public function store(Request $request) {
-        $request->validate([
-            'title'=>'required|min:5',
-            'location'=>'required',
-            'event_category_id'=>'required|exists:event_categories,id',
-            'pax'=>'required|integer',
-            'description'=>'required',
-            'tarikh'=>'required|array',
-            'tarikh.*'=>'required|date',
-        ]);
+    public function store(EventRequest $request) {
 
         $event = new Event();
         $event->uuid = Uuid::uuid4();
@@ -57,9 +49,21 @@ class EventController extends Controller
         return redirect()->route('events.index');
     }
 
-    public function edit(Event $uuid) {
-        $event = $uuid;
+    public function edit(Event $event) {
+        // $event = $uuid;
         $eventCategories = EventCategory::pluck('category','id');
         return view('events.edit', compact('event', 'eventCategories'));
+    }
+
+    public function update(EventRequest $request, Event $event) {
+        $event->title = $request->title;
+        $event->location = $request->location;
+        $event->event_category_id = $request->event_category_id;
+        $event->pax = $request->pax;
+        $event->description = $request->description;
+        $event->save();
+
+        flash('Event Updated Succesfully')->success()->important();
+        return redirect()->route('events.index');
     }
 }

@@ -15,7 +15,7 @@
                 Create New Event
             </div>
             <div class="card-body">
-                <form action="{{route('events.update', ['uuid'=>$event->uuid])}}" method="POST">
+                <form action="{{route('events.update', ['event'=>$event->uuid])}}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
