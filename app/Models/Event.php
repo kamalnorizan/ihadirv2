@@ -20,6 +20,11 @@ class Event extends Model
 
     protected $guarded = ['id'];
 
+    function getRouteKeyName()
+    {
+        return 'uuid';
+    }
+
     /**
      * Get the owner that owns the Event
      *

@@ -21,6 +21,7 @@
                             <td>Title</td>
                             <td>Category</td>
                             <td>Owner</td>
+                            <td>Action</td>
                         </tr>
                         @foreach ($events as $event)
                             <tr>
@@ -28,6 +29,9 @@
                                 <td>{{ $event->title }}</td>
                                 <td>{{ $event->eventCategory->category }}</td>
                                 <td>{{ $event->owner->name }}</td>
+                                <td>
+                                    <a href="{{ route('events.edit', $event->uuid) }}" class="btn btn-sm btn-primary">Edit</a>
+                                </td>
                             </tr>
                         @endforeach
                     </table>

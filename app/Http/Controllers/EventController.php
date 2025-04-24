@@ -43,6 +43,7 @@ class EventController extends Controller
         $event->owner_id = Auth::user()->id;
         $event->email = Auth::user()->email;
         $event->save();
+
         foreach ($request->tarikh as $key => $tarikh) {
             $eventDate = new EventDate();
             $eventDate->event_id = $event->id;
@@ -54,5 +55,11 @@ class EventController extends Controller
         flash('Event created successfully')->success()->important();
 
         return redirect()->route('events.index');
+    }
+
+    public function edit(Event $uuid) {
+        $event = $uuid;
+        $eventCategories = EventCategory::pluck('category','id');
+        return view('events.edit', compact('event', 'eventCategories'));
     }
 }
