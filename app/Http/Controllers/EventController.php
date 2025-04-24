@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Ramsey\Uuid\Uuid;
+use App\Models\EventDate;
 use Illuminate\Http\Request;
 use App\Models\EventCategory;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,8 @@ class EventController extends Controller
             'event_category_id'=>'required|exists:event_categories,id',
             'pax'=>'required|integer',
             'description'=>'required',
+            'tarikh'=>'required|array',
+            'tarikh.*'=>'required|date',
         ]);
 
         $event = new Event();
@@ -40,6 +43,13 @@ class EventController extends Controller
         $event->owner_id = Auth::user()->id;
         $event->email = Auth::user()->email;
         $event->save();
+        foreach ($request->tarikh as $key => $tarikh) {
+            $eventDate = new EventDate();
+            $eventDate->event_id = $event->id;
+            $eventDate->event_date = $tarikh;
+            $eventDate->save();
+        }
+
 
         flash('Event created successfully')->success()->important();
 

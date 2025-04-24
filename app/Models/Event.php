@@ -39,4 +39,9 @@ class Event extends Model
     {
         return $this->belongsTo(EventCategory::class, 'event_category_id', 'id');
     }
+
+    public function eventDates()
+    {
+        return $this->hasMany(EventDate::class, 'event_id', 'id');
+    }
 }

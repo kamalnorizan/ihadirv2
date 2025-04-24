@@ -60,15 +60,24 @@
                     <h4>Tarikh Event <button class="btn btn-sm btn-info" type="button" id="tambahTarikhBtn">Tambah Tarikh</button></h4>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-group {{ $errors->has('tarikh[]') ? ' has-error' : '' }}">
-                                <label for="tarikh[]">Tarikh</label>
-                                <input type="date" id="tarikh[]" name="tarikh[]" class="form-control" required>
-                                <small class="text-danger">{{ $errors->first('tarikh[]') }}</small>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
                             <div id="tarikhEventDiv">
-
+                                @if (old('tarikh'))
+                                    @foreach (old('tarikh') as $key => $value)
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <input type="date" name="tarikh[]" class="form-control" value="{{ $value }}">
+                                                    @error('tarikh.'.$key)
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-danger removeTarikhBtn" type="button">Hapus</button>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -89,7 +98,7 @@
             '<div class="row">'+
             '<div class="col-md-8">'+
             '    <div class="form-group ">'+
-            '        <input type="date" id="tarikh[]" name="tarikh[]" class="form-control" required="">'+
+            '        <input type="date" id="tarikh[]" name="tarikh[]" class="form-control">'+
             '        <small class="text-danger"></small>'+
             '    </div>'+
             '</div>'+
