@@ -15,17 +15,17 @@
                 Create New Event
             </div>
             <div class="card-body">
-                <form action="{{route('events.store')}}">
+                <form action="{{route('events.store')}}" method="POST">
                     @csrf
                     <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
                         <label for="title">Title</label>
-                        <input type="text" id="title" name="title" value="{{ old('title') }}"  class="form-control" required="required" placeholder="Enter the title of the event">
+                        <input type="text" id="title" name="title" value="{{ old('title') }}"  class="form-control" placeholder="Enter the title of the event">
                         <small class="text-danger">{{ $errors->first('title') }}</small>
                     </div>
 
                     <div class="form-group {{ $errors->has('location') ? 'has-error' : '' }}">
                         <label for="location">Location</label>
-                        <input type="text" id="location" name="location" value="{{ old('location') }}"  class="form-control" required="required" placeholder="Enter event location">
+                        <input type="text" id="location" name="location" value="{{ old('location') }}"  class="form-control" placeholder="Enter event location">
                         <small class="text-danger">{{ $errors->first('location') }}</small>
                     </div>
 
@@ -33,7 +33,7 @@
                         <div class="col-md-6">
                             <div class="form-group {{ $errors->has('event_category_id') ? 'has-error' : '' }}">
                                 <label for="event_category_id">Category</label>
-                                <select id="event_category_id" name="event_category_id" class="form-control" required >
+                                <select id="event_category_id" name="event_category_id" class="form-control"  >
                                     <option value="">Select Category</option>
                                     @foreach ($eventCategories as $key =>$category)
                                         <option value="{{ $key }}" {{ (old('event_category_id') == $key) ? 'selected' : '' }}>{{ $category }}</option>
@@ -45,7 +45,7 @@
                         <div class="col-md-6">
                             <div class="form-group {{ $errors->has('pax') ? 'has-error' : '' }}">
                                 <label for="pax">Total Pax</label>
-                                <input type="number" id="pax" value="{{ old('pax') }}" name="pax" class="form-control" required="required" >
+                                <input type="number" id="pax" value="{{ old('pax') }}" name="pax" class="form-control" >
                                 <small class="text-danger">{{ $errors->first('pax') }}</small>
                             </div>
                         </div>
@@ -53,9 +53,11 @@
 
                     <div class="form-group {{ $errors->has('description') ? 'has-error' : '' }}">
                         <label for="description">Description</label>
-                        <textarea id="description" name="description" class="form-control" required="required">{{ old('description') }} </textarea>
+                        <textarea id="description" name="description" class="form-control">{{ old('description') }} </textarea>
                         <small class="text-danger">{{ $errors->first('description') }}</small>
                     </div>
+
+                    <button class="btn btn-primary float-right" id="submitBtn" type="submit">Hantar</button>
                 </form>
             </div>
         </div>

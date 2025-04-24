@@ -18,4 +18,14 @@ class EventController extends Controller
         // dd($eventCategories);
         return view('events.create', compact('eventCategories'));
     }
+
+    public function store(Request $request) {
+        $request->validate([
+            'title'=>'required|min:5',
+            'location'=>'required',
+            'event_category_id'=>'required|exists:event_categories,id',
+            'pax'=>'required|integer',
+            'description'=>'required',
+        ]);
+    }
 }
