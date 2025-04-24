@@ -63,6 +63,15 @@ class EventController extends Controller
         $event->description = $request->description;
         $event->save();
 
+        $event->eventDates()->delete();
+
+        foreach ($request->tarikh as $key => $tarikh) {
+            $eventDate = new EventDate();
+            $eventDate->event_id = $event->id;
+            $eventDate->event_date = $tarikh;
+            $eventDate->save();
+        }
+
         flash('Event Updated Succesfully')->success()->important();
         return redirect()->route('events.index');
     }
