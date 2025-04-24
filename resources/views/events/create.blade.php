@@ -56,7 +56,22 @@
                         <textarea id="description" name="description" class="form-control">{{ old('description') }} </textarea>
                         <small class="text-danger">{{ $errors->first('description') }}</small>
                     </div>
+                    <hr>
+                    <h4>Tarikh Event <button class="btn btn-sm btn-info" type="button" id="tambahTarikhBtn">Tambah Tarikh</button></h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group {{ $errors->has('tarikh[]') ? ' has-error' : '' }}">
+                                <label for="tarikh[]">Tarikh</label>
+                                <input type="date" id="tarikh[]" name="tarikh[]" class="form-control" required>
+                                <small class="text-danger">{{ $errors->first('tarikh[]') }}</small>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div id="tarikhEventDiv">
 
+                            </div>
+                        </div>
+                    </div>
                     <button class="btn btn-primary float-right" id="submitBtn" type="submit">Hantar</button>
                 </form>
             </div>
@@ -67,6 +82,28 @@
 
 @section('script')
 <script>
+    $('#tambahTarikhBtn').click(function (e) {
+        e.preventDefault();
+        var tarikhEventDiv = $('#tarikhEventDiv');
+        $(tarikhEventDiv).append(
+            '<div class="row">'+
+            '<div class="col-md-8">'+
+            '    <div class="form-group ">'+
+            '        <input type="date" id="tarikh[]" name="tarikh[]" class="form-control" required="">'+
+            '        <small class="text-danger"></small>'+
+            '    </div>'+
+            '</div>'+
+            '<div class="col-md-4">'+
+            '    <button class="btn btn-danger removeTarikhBtn" type="button">Hapus</button>'+
+            '</div>'+
+            '</div>'
+        );
+    });
+
+    $(document).on("click",".removeTarikhBtn",function (e) {
+        e.preventDefault();
+        $(this).closest('.row').remove();
+    });
 </script>
 @endsection
 

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class EventController extends Controller
 {
     public function index() {
-        $events = Event::with('owner', 'eventCategory')->get();
+        $events = Event::with('owner', 'eventCategory')->latest()->get();
         return view('events.index', compact('events'));
     }
 
