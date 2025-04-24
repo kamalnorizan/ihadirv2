@@ -75,4 +75,11 @@ class EventController extends Controller
         flash('Event Updated Succesfully')->success()->important();
         return redirect()->route('events.index');
     }
+
+    public function destroy(Event $event) {
+        $event->eventDates()->delete();
+        $event->delete();
+        flash('Event Deleted Succesfully')->success()->important();
+        return redirect()->route('events.index');
+    }
 }

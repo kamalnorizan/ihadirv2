@@ -31,6 +31,7 @@
                                 <td>{{ $event->owner->name }}</td>
                                 <td>
                                     <a href="{{ route('events.edit', $event->uuid) }}" class="btn btn-sm btn-primary">Edit</a>
+                                    <button type="button" class="btn btn-sm btn-danger btn-delete" data-uuid="{{$event->uuid}}">Delete</button>
                                 </td>
                             </tr>
                         @endforeach
@@ -42,5 +43,42 @@
 @endsection
 
 @section('script')
-    <script></script>
+    <script>
+        $('.btn-delete').click(function (e) {
+            e.preventDefault();
+            var uuid = $(this).data('uuid');
+            var url = "{{ route('events.destroy', ':uuid') }}";
+            url = url.replace(':uuid', uuid);
+
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this event again!",
+                icon: "warning",
+                buttons: {cancel: {
+                    text: "Cancel",
+                    value: null,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirm: {
+                    text: "Yes, i'm sure!",
+                    value: true,
+                    visible: true,
+                    className: "btn-danger",
+                    closeModal: true
+                }}
+            }).then((value)=>{
+                if(value==true){
+                    var form = $('<form>', {
+                        'action': url,
+                        'method': 'POST'
+                    });
+                    form.append('{{ csrf_field() }}');
+                    form.append('{{ method_field('DELETE') }}');
+                    form.appendTo('body').submit();
+                }
+            });
+        });
+    </script>
 @endsection
