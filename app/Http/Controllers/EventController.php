@@ -15,14 +15,24 @@ use Yajra\DataTables\Contracts\DataTable;
 class EventController extends Controller
 {
     public function index() {
-        $events = Event::with('owner', 'eventCategory')->latest()->get();
+        $events = Event::with(['owner'=>function($q){
+            $q->withCount('events');
+        }, 'eventCategory'])->limit(5)->latest()->get();
+
+        // dump($events->first()->owner->events_count);
+        // dd($events);
 
         $eventCategories = EventCategory::get();
         return view('events.index', compact('events','eventCategories'));
     }
 
     public function ajaxLoadEventsTbl(Request $request) {
-        $events = Event::with('owner', 'eventCategory');
+
+        $events = Event::with(['owner'=>function($q){
+            $q->select('id','name');
+        }, 'eventCategory'=> function($q){
+            $q->select('id','category');
+        }])->select('uuid', 'title', 'location', 'event_category_id', 'pax',  'owner_id', 'email');
 
         if($request->has('eventCategory') && $request->eventCategory != '') {
             $events = $events->whereIn('event_category_id', $request->eventCategory);
