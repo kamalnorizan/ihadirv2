@@ -7,6 +7,8 @@ use App\Http\Controllers\EventController;
 //     dump($event->sql);
 // });
 
+
+
 Route::get('/', function () {
     return view('welcome');
 });
