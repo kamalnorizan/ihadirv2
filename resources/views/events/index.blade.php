@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('head')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.11/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.11/css/dataTables.bootstrap4.min.css">
 @endsection
 
 @section('breadcrumb')
@@ -77,6 +78,9 @@
                     "data": null,
                     "name": null,
                     "orderable": false,
+                    "render": function(data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
                 },
                 {
                     "data": "title",
