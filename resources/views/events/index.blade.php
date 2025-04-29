@@ -129,7 +129,45 @@
             ]
         });
 
-        $('.btn-delete').click(function(e) {
+        $(document).on("click", ".btn-delete", function(e) {
+            e.preventDefault();
+            var uuid = $(this).data('uuid');
+            var url = "{{ route('events.destroy', ':uuid') }}";
+            url = url.replace(':uuid', uuid);
+
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this event again!",
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        text: "Cancel",
+                        value: null,
+                        visible: true,
+                        className: "",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "Yes, I'm sure!",
+                        value: true,
+                        visible: true,
+                        className: "btn-danger",
+                        closeModal: true
+                    }
+                }
+            }).then((value) => {
+                if (value == true) {
+                    var form = $('<form>', {
+                        'action': url,
+                        'method': 'POST'
+                    });
+                    form.append('{{ csrf_field() }}');
+                    form.append('{{ method_field('DELETE') }}');
+                    form.appendTo('body').submit();
+                }
+            });
+        });
+        $(document).on("click",".btn-delete",function (e) {
             e.preventDefault();
             var uuid = $(this).data('uuid');
             var url = "{{ route('events.destroy', ':uuid') }}";

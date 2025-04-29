@@ -40,7 +40,14 @@ class EventController extends Controller
                 return $owner;
             })
             ->addColumn('action', function ($event) {
-                return 1;
+                $actions = '';
+                $actions = $actions . '<a href="'.route('events.show', $event->uuid).'" class="btn btn-sm btn-warning">Show</a> ';
+
+                $actions = $actions . '<a href="'.route('events.edit', $event->uuid).'" class="btn btn-sm btn-primary">Edit</a> ';
+
+                $actions = $actions . '<button type="button" class="btn btn-sm btn-danger btn-delete" data-uuid="'.$event->uuid.'">Delete</button>';
+
+                return $actions;
             })
             ->rawColumns(['action','category'])
             ->make(true);
