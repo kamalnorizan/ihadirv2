@@ -32,4 +32,17 @@ class EventRequest extends FormRequest
             'tarikh.*'=>'required|date'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'title.required' => 'Title is required',
+            'location.required' => 'Location is required',
+            'event_category_id.required' => 'Event category is required',
+            'pax.required' => 'Pax is required',
+            'description.required' => 'Description is required',
+            'tarikh.required' => 'Date is required',
+            'tarikh.*.required' => 'Date is required'
+        ];
+    }
 }

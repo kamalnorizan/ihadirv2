@@ -49,6 +49,11 @@ class EventController extends Controller
         return redirect()->route('events.index');
     }
 
+    public function show(Event $event) {
+
+        return view('events.show', compact('event'));
+    }
+
     public function edit(Event $event) {
         // $event = $uuid;
         $eventCategories = EventCategory::pluck('category','id');
