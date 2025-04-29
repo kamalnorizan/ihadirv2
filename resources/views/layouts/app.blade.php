@@ -260,7 +260,8 @@
     <script src="{{ asset('res/assets/plugins/pace/pace.min.js') }}" type="text/javascript"></script>
     <!--  A polyfill for browsers that don't support ligatures: remove liga.js if not needed-->
     <script src="{{ asset('res/assets/plugins/liga.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('res/assets/plugins/jquery/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
+    {{-- <script src="{{ asset('res/assets/plugins/jquery/jquery-3.2.1.min.js') }}" type="text/javascript"></script> --}}
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="{{ asset('res/assets/plugins/modernizr.custom.js') }}" type="text/javascript"></script>
     <script src="{{ asset('res/assets/plugins/jquery-ui/jquery-ui.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('res/assets/plugins/popper/umd/popper.min.js') }}" type="text/javascript"></script>
@@ -278,17 +279,6 @@
     {{-- <script src="https://cdn.datatables.net/plug-ins/1.10.25/sorting/datetime-moment.js"></script> --}}
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-    <script src="{{ asset('res/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('res/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js') }}">
-    </script>
-    <script src="{{ asset('res/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('res/assets/plugins/jquery-datatable/extensions/Responsive/js/dataTables.responsive.min.js') }}">
-    </script>
-    <script src="{{ asset('res/assets/plugins/jquery-datatable/extensions/FixedColumns/js/dataTables.fixedColumns.min.js') }}">
-    {{-- <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.13.2/r-2.4.0/datatables.min.js"></script> --}}
-    {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" --}}
-        {{-- integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"> --}}
-    </script>
 
     <!-- END VENDOR JS -->
     <!-- BEGIN CORE TEMPLATE JS -->

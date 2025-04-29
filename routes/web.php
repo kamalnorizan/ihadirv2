@@ -13,6 +13,7 @@ Route::get('/', function () {
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/events', [EventController::class,'index'])->name('events.index');
+    Route::post('/events/ajaxLoadEventsTbl', [EventController::class,'ajaxLoadEventsTbl'])->name('events.ajaxLoadEventsTbl');
     Route::get('/event/create', [EventController::class,'create'])->name('events.create');
     Route::get('/event/{event}', [EventController::class,'show'])->name('events.show');
     Route::get('/event/{event}/edit', [EventController::class,'edit'])->name('events.edit');

@@ -9,12 +9,35 @@ use Illuminate\Http\Request;
 use App\Models\EventCategory;
 use App\Http\Requests\EventRequest;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
+use Yajra\DataTables\Contracts\DataTable;
 
 class EventController extends Controller
 {
     public function index() {
         $events = Event::with('owner', 'eventCategory')->latest()->get();
         return view('events.index', compact('events'));
+    }
+
+    public function ajaxLoadEventsTbl(Request $request) {
+        $events = Event::with('owner', 'eventCategory');
+
+        return DataTables::of($events)
+            ->addColumn('category', function ($event) {
+                $category = '<span class="badge badge-success">'.$event->eventCategory->category.'</span>';
+
+                return $category;
+            })
+            ->addColumn('owner', function ($event) {
+                $owner = $event->owner->name;
+
+                return $owner;
+            })
+            ->addColumn('action', function ($event) {
+                return 1;
+            })
+            ->rawColumns(['action','category'])
+            ->make(true);
     }
 
     public function create() {
