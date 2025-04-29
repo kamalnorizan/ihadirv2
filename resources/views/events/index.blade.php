@@ -12,6 +12,24 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group {{ $errors->has('eventCategory') ? 'has-error' : '' }}">
+                                <label for="eventCategory">Event Category</label>
+                                <select id="eventCategory" name="eventCategory" id="eventCategory" class="form-control" required multiple>
+                                    <option value="">Select Event Category</option>
+                                    @foreach($eventCategories as $eventCategory)
+                                        <option value="{{ $eventCategory->id }}">{{ $eventCategory->category }}</option>
+                                    @endforeach
+                                </select>
+                                <small class="text-danger">{{ $errors->first('eventCategory') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="card card-default">
                 <div class="card-header">
                     title
@@ -55,7 +73,16 @@
 @section('script')
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
     <script>
-        // $('#eventsTbl').DataTable();
+        $('#eventCategory').select2({
+            placeholder: "Select Event Category",
+            allowClear: true,
+            width: '100%'
+        });
+
+        $('#eventCategory').change(function() {
+            eventsTbl.ajax.reload();
+        });
+
         var eventsTbl= $('#eventsTbl').DataTable({
             "processing": true,
             "serverSide": true,
@@ -65,6 +92,7 @@
                 "dataType": "json",
                 "data": function(d) {
                     d._token = "{{ csrf_token() }}";
+                    d.eventCategory = $('#eventCategory').val();
                 },
                 error: function(xhr, error, code) {
                     if (xhr.status === 419) {

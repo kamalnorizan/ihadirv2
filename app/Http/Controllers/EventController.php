@@ -16,11 +16,17 @@ class EventController extends Controller
 {
     public function index() {
         $events = Event::with('owner', 'eventCategory')->latest()->get();
-        return view('events.index', compact('events'));
+
+        $eventCategories = EventCategory::get();
+        return view('events.index', compact('events','eventCategories'));
     }
 
     public function ajaxLoadEventsTbl(Request $request) {
         $events = Event::with('owner', 'eventCategory');
+
+        if($request->has('eventCategory') && $request->eventCategory != '') {
+            $events = $events->whereIn('event_category_id', $request->eventCategory);
+        }
 
         return DataTables::of($events)
             ->addColumn('category', function ($event) {
