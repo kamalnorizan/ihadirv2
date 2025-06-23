@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 
 // DB::listen(function ($event) {
@@ -24,6 +25,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/event', [EventController::class,'store'])->name('events.store');
     Route::put('/event/{event}', [EventController::class,'update'])->name('events.update');
     Route::delete('/event/{event}', [EventController::class,'destroy'])->name('events.destroy');
+
+    Route::get('/user',[UserController::class,'index'])->name('users.index');
 });
 
 
