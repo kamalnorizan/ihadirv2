@@ -11,12 +11,14 @@
             </a>
             <span class="icon-thumbnail"><i class="pg-icon">home</i></span>
         </li>
+        @canany(['Approve Borang Bilik Mesyuarat Lili', 'Approve Borang Bilik Mesyuarat Teratai'])
         <li>
             <a href="{{ route('events.index') }}" class="title">
                 <span class="title">Event</span>
             </a>
             <span class="icon-thumbnail"><i class="pg-icon">calendar</i></span>
         </li>
+        @endcanany
         <li>
             <a href="{{ route('events.create') }}" class="title">
                 <span class="title">Create Event</span>

@@ -14,7 +14,9 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/events', [EventController::class,'index'])->name('events.index');
+
+    Route::get('/events', [EventController::class,'index'])->name('events.index')->middleware(['permission:Approve Borang Bilik Mesyuarat Teratai|Approve Borang Bilik Mesyuarat Lili)']);
+
     Route::post('/events/ajaxLoadEventsTbl', [EventController::class,'ajaxLoadEventsTbl'])->name('events.ajaxLoadEventsTbl');
     Route::get('/event/create', [EventController::class,'create'])->name('events.create');
     Route::get('/event/{event}', [EventController::class,'show'])->name('events.show');
