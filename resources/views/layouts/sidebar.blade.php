@@ -18,13 +18,13 @@
             </a>
             <span class="icon-thumbnail"><i class="pg-icon">calendar</i></span>
         </li>
-        @endcanany
         <li>
             <a href="{{ route('events.create') }}" class="title">
                 <span class="title">Create Event</span>
             </a>
             <span class="icon-thumbnail"><i class="pg-icon">calendar</i></span>
         </li>
+        @endcanany
         <li class="">
             <a href="#" class="logoutBtn"><span class="title">Log Keluar</span></a>
             <span class="icon-thumbnail"><i class="pg-icon">card</i></span>
