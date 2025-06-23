@@ -14,4 +14,16 @@ class UserController extends Controller
         $roles = Role::all();
         return view('users.index', compact('users','roles'));
     }
+
+    public function assignRole(Request $request) {
+        $user = User::findOrFail($request->user_id);
+
+        $roles = Role::whereIn('id', $request->roles)->get();
+        $user->syncRoles($roles);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Role(s) assigned successfully.',
+        ]);
+    }
 }

@@ -27,6 +27,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/event/{event}', [EventController::class,'destroy'])->name('events.destroy');
 
     Route::get('/user',[UserController::class,'index'])->name('users.index');
+    Route::post('/user/assignRole',[UserController::class,'assignRole'])->name('users.assignRole');
 });
 
 

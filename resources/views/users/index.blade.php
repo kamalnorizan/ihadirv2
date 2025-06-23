@@ -3,6 +3,11 @@
 @section('head')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.11/css/jquery.dataTables.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.11/css/dataTables.bootstrap4.min.css">
+    <style>
+        .badge-roles{
+            cursor: pointer;
+        }
+    </style>
 @endsection
 
 @section('breadcrumb')
@@ -33,7 +38,7 @@
                                     <td>{{ $user->email }}</td>
                                     <td>
                                         @foreach ($user->roles as $role)
-                                            <span class="badge badge-info">{{ $role->name }}</span>
+                                            <span class="badge badge-info badge-roles">{{ $role->name }}</span>
                                         @endforeach
                                         @foreach ($user->permissions as $permission)
                                             <span class="badge badge-warning text-black">{{ $permission->name }}</span>
@@ -68,6 +73,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <input type="hidden" name="user_id" value="value" id="user_id">
                     <h3>Roles</h3>
                     <div class="row">
                         @foreach ($roles as $role)
@@ -97,13 +103,19 @@
 @section('script')
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
     <script>
+
+        $('.badge-roles').click(function (e) {
+            e.preventDefault();
+            alert('nak delete?');
+        });
+
         $('#rolepermissionmodel').on('show.bs.modal', function(event) {
             $('.roles').prop('checked', false);
 
             var button = $(event.relatedTarget);
             var id = button.data('id');
             var roles = button.data('roles');
-
+            $('#user_id').val(id);
             $.each(roles, function(indexInArray, valueOfElement) {
                 $('#role_' + valueOfElement).prop('checked', true);
             });
@@ -116,10 +128,22 @@
                 roles.push($(this).val());
             });
 
-            console.log(roles);
+            $.ajax({
+                type: "post",
+                url: "{{ route('users.assignRole') }}",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    roles: roles,
+                    user_id: $('#user_id').val()
+                },
+                dataType: "json",
+                success: function (response) {
+                    window.location.reload();
+                }
+            });
         });
 
-        $('#users-table').DataTable({
+        var userTable = $('#users-table').DataTable({
             "order": [
                 [0, "asc"]
             ],
