@@ -25,6 +25,14 @@
             <span class="icon-thumbnail"><i class="pg-icon">calendar</i></span>
         </li>
         @endcanany
+        @canany(['Urus Pengguna'])
+        <li>
+            <a href="{{ route('users.index') }}" class="title">
+                <span class="title">Users</span>
+            </a>
+            <span class="icon-thumbnail"><i class="pg-icon">user</i></span>
+        </li>
+        @endcanany
         <li class="">
             <a href="#" class="logoutBtn"><span class="title">Log Keluar</span></a>
             <span class="icon-thumbnail"><i class="pg-icon">card</i></span>
