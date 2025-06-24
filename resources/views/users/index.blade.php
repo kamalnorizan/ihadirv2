@@ -15,6 +15,7 @@
 @endsection
 
 @section('content')
+
     <div class="row">
         <div class="col-md-12">
             <div class="card card-default">
@@ -47,7 +48,7 @@
                                     <td>
                                         @can('Assign Role Pengguna')
                                         <button type="button" class="btn btn-primary btn-sm" data-id="{{ $user->id }}"
-                                            data-roles="{{ $user->roles->pluck('id') }}" data-toggle="modal"
+                                            data-roles="{{ $user->roles->pluck('id') }}" data-permissions="{{ $user->permissions->pluck('id') }}"  data-toggle="modal"
                                             data-target="#rolepermissionmodel">
                                             Assign Role/Permission
                                         </button>
@@ -92,6 +93,22 @@
                         @endforeach
 
                     </div>
+                    <h3>Permissions</h3>
+                    <div class="row">
+                        @foreach ($permissions as $permission)
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input permissions" type="checkbox" id="permission_{{ $permission->id }}"
+                                            name="permission_{{ $permission->id }}" value="{{ $permission->id }}">
+                                        <label class="form-check-label"
+                                            for="permission_{{ $permission->id }}">{{ $permission->name }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -113,13 +130,18 @@
 
         $('#rolepermissionmodel').on('show.bs.modal', function(event) {
             $('.roles').prop('checked', false);
+            $('.permissions').prop('checked', false);
 
             var button = $(event.relatedTarget);
             var id = button.data('id');
             var roles = button.data('roles');
+            var permissions = button.data('permissions');
             $('#user_id').val(id);
             $.each(roles, function(indexInArray, valueOfElement) {
                 $('#role_' + valueOfElement).prop('checked', true);
+            });
+            $.each(permissions, function(indexInArray, valueOfElement) {
+                $('#permission_' + valueOfElement).prop('checked', true);
             });
         });
 
@@ -129,6 +151,11 @@
             $('.roles:checked').each(function() {
                 roles.push($(this).val());
             });
+            var permissions = [];
+            $('.permissions:checked').each(function() {
+                permissions.push($(this).val());
+            });
+
 
             $.ajax({
                 type: "post",
@@ -136,6 +163,7 @@
                 data: {
                     _token: "{{ csrf_token() }}",
                     roles: roles,
+                    permissions: permissions,
                     user_id: $('#user_id').val()
                 },
                 dataType: "json",

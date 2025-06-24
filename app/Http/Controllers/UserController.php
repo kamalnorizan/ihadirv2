@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
@@ -12,14 +13,27 @@ class UserController extends Controller
     {
         $users = User::all();
         $roles = Role::all();
-        return view('users.index', compact('users','roles'));
+        $permissions = Permission::all();
+        return view('users.index', compact('users', 'roles', 'permissions'));
     }
 
-    public function assignRole(Request $request) {
+    public function assignRole(Request $request)
+    {
         $user = User::findOrFail($request->user_id);
+        if ($request->roles) {
+            $roles = Role::whereIn('id', $request->roles)->get();
+            $user->syncRoles($roles);
+        } else {
+            $user->syncRoles([]);
+        }
 
-        $roles = Role::whereIn('id', $request->roles)->get();
-        $user->syncRoles($roles);
+        if ($request->permissions) {
+            $permissions = Permission::whereIn('id', $request->permissions)->get();
+            $user->syncPermissions($permissions);
+        } else {
+            $user->syncPermissions([]);
+        }
+
 
         return response()->json([
             'status' => 'success',
