@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
         // ]);
         // Event::factory(500)->create();
         $this->call([
-            RolesAndPermissions::class,
+            // RolesAndPermissions::class,
+            RoleManagementSeeder::class
         ]);
 
     }

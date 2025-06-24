@@ -45,11 +45,13 @@
                                         @endforeach
                                     </td>
                                     <td>
+                                        @can('Assign Role Pengguna')
                                         <button type="button" class="btn btn-primary btn-sm" data-id="{{ $user->id }}"
                                             data-roles="{{ $user->roles->pluck('id') }}" data-toggle="modal"
                                             data-target="#rolepermissionmodel">
                                             Assign Role/Permission
                                         </button>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

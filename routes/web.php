@@ -26,8 +26,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/event/{event}', [EventController::class,'update'])->name('events.update');
     Route::delete('/event/{event}', [EventController::class,'destroy'])->name('events.destroy');
 
-    Route::get('/user',[UserController::class,'index'])->name('users.index');
-    Route::post('/user/assignRole',[UserController::class,'assignRole'])->name('users.assignRole');
+    Route::get('/user',[UserController::class,'index'])->name('users.index')->middleware(['role_or_permission:Urus Pengguna']);
+    Route::post('/user/assignRole',[UserController::class,'assignRole'])->name('users.assignRole')->middleware(['role_or_permission:Assign Role Pengguna']);
 });
 
 
