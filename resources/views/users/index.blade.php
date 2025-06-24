@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.11/css/jquery.dataTables.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.11/css/dataTables.bootstrap4.min.css">
     <style>
-        .badge-roles{
+        .badge-role-permission {
             cursor: pointer;
         }
     </style>
@@ -15,7 +15,41 @@
 @endsection
 
 @section('content')
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Role Management</h4>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>Name</td>
+                            <td>Permissions</td>
+                            <td>Action</td>
+                        </tr>
+                        @foreach ($roles as $role)
+                            <tr>
+                                <td>{{ $role->name }}</td>
+                                <td>
+                                    @foreach ($role->permissions as $permission)
+                                        <span class="badge badge-info badge-role-permission"
+                                            data-id="{{ $role->id }}">{{ $permission->name }}</span>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    <button data-permission="{{ $role->permissions->pluck('id') }}"
+                                        data-id="{{ $role->id }}" type="button" class="btn btn-primary btn-sm"
+                                        data-toggle="modal" data-target="#assignPermissionModal">
+                                        Assign Permission
+                                    </button>
 
+                                </td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card card-default">
@@ -47,11 +81,12 @@
                                     </td>
                                     <td>
                                         @can('Assign Role Pengguna')
-                                        <button type="button" class="btn btn-primary btn-sm" data-id="{{ $user->id }}"
-                                            data-roles="{{ $user->roles->pluck('id') }}" data-permissions="{{ $user->permissions->pluck('id') }}"  data-toggle="modal"
-                                            data-target="#rolepermissionmodel">
-                                            Assign Role/Permission
-                                        </button>
+                                            <button type="button" class="btn btn-primary btn-sm" data-id="{{ $user->id }}"
+                                                data-roles="{{ $user->roles->pluck('id') }}"
+                                                data-permissions="{{ $user->permissions->pluck('id') }}" data-toggle="modal"
+                                                data-target="#rolepermissionmodel">
+                                                Assign Role/Permission
+                                            </button>
                                         @endcan
                                     </td>
                                 </tr>
@@ -63,6 +98,45 @@
         </div>
     </div>
 
+
+    <!-- Modal -->
+    <div class="modal fade" id="assignPermissionModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Assign Permission/h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <div class="modal-body">
+                    <h3>Permissions</h3>
+                    <input type="hidden" name="role_model_role_id" id="role_model_role_id" value="value" id="role_model_role_id">
+                    <div class="row">
+                        @foreach ($permissions as $permission)
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input permissions_role" type="checkbox"
+                                            id="permissions_role_{{ $permission->id }}"
+                                            name="permissions_role_{{ $permission->id }}" value="{{ $permission->id }}">
+                                        <label class="form-check-label"
+                                            for="permissions_role_{{ $permission->id }}">{{ $permission->name }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnPermissionRole" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="rolepermissionmodel" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
@@ -96,10 +170,11 @@
                     <h3>Permissions</h3>
                     <div class="row">
                         @foreach ($permissions as $permission)
-                            <div class="col-6">
+                            <div class="col-12">
                                 <div class="form-group">
                                     <div class="form-check">
-                                        <input class="form-check-input permissions" type="checkbox" id="permission_{{ $permission->id }}"
+                                        <input class="form-check-input permissions" type="checkbox"
+                                            id="permission_{{ $permission->id }}"
                                             name="permission_{{ $permission->id }}" value="{{ $permission->id }}">
                                         <label class="form-check-label"
                                             for="permission_{{ $permission->id }}">{{ $permission->name }}</label>
@@ -121,11 +196,97 @@
 
 @section('script')
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-
-        $('.badge-roles').click(function (e) {
+        $('.badge-roles').click(function(e) {
             e.preventDefault();
             alert('nak delete?');
+        });
+
+        $('.badge-role-permission').click(function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var name = $(this).text();
+
+            swal({
+                title: "Are you sure?",
+                text: "Do you want to revoke this permission from role",
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        text: "Cancel",
+                        value: null,
+                        visible: true,
+                        className: "",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "Yes, i'm sure!",
+                        value: true,
+                        visible: true,
+                        className: "btn-danger",
+                        closeModal: true
+                    }
+                }
+            }).then((value) => {
+                // alert(value);
+                if (value == true) {
+                    $.ajax({
+                        type: "post",
+                        url: "{{ route('roles.removePermission') }}",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            role_id: id,
+                            permission: name
+                        },
+                        dataType: "json",
+                        success: function(response) {
+                            swal("Deleted!", "Permission successfully revoked.", "success")
+                                .then(() => {
+                                    window.location.reload();
+                                });
+                        }
+                    });
+                }
+            });
+        });
+
+
+
+        $('#assignPermissionModal').on('show.bs.modal', function(event) {
+            $('.permissions_role').prop('checked', false);
+            var button = $(event.relatedTarget);
+            var role = button.data('id');
+            var permissions = button.data('permission');
+            $('#role_model_role_id').val(role);
+            $.each(permissions, function(indexInArray, valueOfElement) {
+                $('#permissions_role_' + valueOfElement).prop('checked', true);
+            });
+        });
+
+        $('#btnPermissionRole').click(function(e) {
+            e.preventDefault();
+            var permissions = [];
+            $('.permissions_role:checked').each(function() {
+                permissions.push($(this).val());
+            });
+            var role_id = $('#role_model_role_id').val();
+
+            $.ajax({
+                type: "post",
+                url: "{{ route('roles.assignPermission') }}",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    permissions: permissions,
+                    role_id: role_id
+                },
+                dataType: "json",
+                success: function(response) {
+                    window.location.reload();
+                }
+            });
         });
 
         $('#rolepermissionmodel').on('show.bs.modal', function(event) {
@@ -167,7 +328,7 @@
                     user_id: $('#user_id').val()
                 },
                 dataType: "json",
-                success: function (response) {
+                success: function(response) {
                     window.location.reload();
                 }
             });

@@ -28,6 +28,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/user',[UserController::class,'index'])->name('users.index')->middleware(['role_or_permission:Urus Pengguna']);
     Route::post('/user/assignRole',[UserController::class,'assignRole'])->name('users.assignRole')->middleware(['role_or_permission:Assign Role Pengguna']);
+    Route::post('/user/removePermission',[UserController::class,'removePermission'])->name('roles.removePermission')->middleware(['role_or_permission:Assign Role Pengguna']);
+    Route::post('/user/assignPermission',[UserController::class,'assignPermission'])->name('roles.assignPermission')->middleware(['role_or_permission:Assign Role Pengguna']);
 });
 
 

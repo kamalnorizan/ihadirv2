@@ -40,4 +40,33 @@ class UserController extends Controller
             'message' => 'Role(s) assigned successfully.',
         ]);
     }
+
+    public function assignPermission(Request $request)
+    {
+        $role = Role::findOrFail($request->role_id);
+        if($request->permissions) {
+            $permissions = Permission::whereIn('id', $request->permissions)->get();
+            $role->givePermissionTo($permissions);
+        }else {
+            $role->syncPermissions([]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Permission successfully revoked.',
+        ], 200);
+
+    }
+
+    public function removePermission(Request $request)
+    {
+        $role = Role::findOrFail($request->role_id);
+        $role->revokePermissionTo($request->permission);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Permission successfully revoked.',
+        ], 200);
+
+    }
 }
